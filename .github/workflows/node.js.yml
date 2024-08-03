@@ -29,8 +29,8 @@ jobs:
     #  run: npm run build --if-present
     #  env:
     #   CI: false
-    # run: |
-    #        touch ./build/.htaccess
-    #       echo "${{secrets.PROD_HTACCESS_FILE}}" > ./build/.htaccess
+    - run: |
+            touch ./dist/.htaccess
+            echo "${{secrets.PROD_HTACCESS_FILE}}" > ./build/.htaccess
     # run : sudo chmod -R 755 /var/www/html/actions-runner-apple-taxi-frontend/apple-taxi/apple-call-taxi-frontend/apple-call-taxi-frontend/build/static
             
