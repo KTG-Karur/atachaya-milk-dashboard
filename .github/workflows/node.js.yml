@@ -31,6 +31,6 @@ jobs:
     #   CI: false
     - run: |
             touch ./dist/.htaccess
-            echo "${{secrets.PROD_HTACCESS_FILE}}" > ./build/.htaccess
+            echo "${{secrets.PROD_HTACCESS_FILE}}" > ./dist/.htaccess
     # run : sudo chmod -R 755 /var/www/html/actions-runner-apple-taxi-frontend/apple-taxi/apple-call-taxi-frontend/apple-call-taxi-frontend/build/static
             
