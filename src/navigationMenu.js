@@ -36,6 +36,11 @@ export const navigationMenu = [
         icon: "user-plus",
         submenu: [
             {
+                title: "Customer Payment",
+                path: "/customer-payment",
+                icon: "users"
+            },
+            {
                 title: "Customers",
                 path: "/customer",
                 icon: "users"
