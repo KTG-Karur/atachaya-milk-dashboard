@@ -65,7 +65,7 @@ const ForgotPassword = () => {
   return (
     <>
       <Helmet>
-        <title>{companyTitle || "Kanakku"}</title>
+        {/* <title>{"KTG Milk Management"}</title> */}
         <link rel="icon" href={faviconurl ? faviconurl : AlterFavIcon}></link>
       </Helmet>
       <div className="main-wrapper login-body">

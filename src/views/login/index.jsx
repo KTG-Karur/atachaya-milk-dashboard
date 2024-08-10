@@ -72,7 +72,7 @@ const Login = () => {
   return (
     <>
       <Helmet>
-        <title>{companyTitle || "Kanakku"}</title>
+        <title>{"KTG Milk-Management-System"}</title>
         <link rel="icon" href={faviconurl ? faviconurl : AlterFavIcon}></link>
       </Helmet>
       <div className="main-wrapper login-body">
@@ -91,7 +91,7 @@ const Login = () => {
               <div className="login-right">
                 <div className="login-right-wrap">
                   <h1>Login</h1>
-                  <p className="account-subtitle">Jeyam Steels & Roofing</p>
+                  <p className="account-subtitle">Milk Management System</p>
                   <div>
                     <form onSubmit={handleSubmit(submitLoginForm)}>
                       <div className="form-group input_text">

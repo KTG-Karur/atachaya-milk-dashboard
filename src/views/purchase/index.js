@@ -7,7 +7,7 @@ import TemplateCustomTable from "../../components/TemplateComponent.js/TemplateT
 import ModalViewBox from "../../components/Atom/ModelViewBox";
 import FormLayout from "../../utils/formLayout";
 import { purchaseForm } from "./formData";
-import { dateConversion, filterArray, showConfirmationDialog, showMessage } from "../../utils/applicationFun";
+import { dateConversion, filterArray, showConfirmationDialog, showMessage, updateDateConversion } from "../../utils/applicationFun";
 import { getSupplier } from "../../api/SupplierApi";
 import { getProduct } from "../../api/ProductApi";
 import { getPaymentEntry } from "../../api/PaymentEntryApi";
@@ -19,10 +19,10 @@ const Purchase = ({ navigation }) => {
 
   const dispatch = useDispatch();
   const errorHandles = useRef();
-/*   const userDetails = localStorage.getItem("userDetails")
-  const localData = JSON.parse(userDetails)
-  let pageAccessData = filterArray(localData.pages, "pageId", 4)
-  let accessIds = pageAccessData[0].access.split(',') */
+  /*   const userDetails = localStorage.getItem("userDetails")
+    const localData = JSON.parse(userDetails)
+    let pageAccessData = filterArray(localData.pages, "pageId", 4)
+    let accessIds = pageAccessData[0].access.split(',') */
 
   const getPurchaseSuccess = useSelector((state) => state.purchaseReducer.getPurchaseSuccess);
   const getPurchaseList = useSelector((state) => state.purchaseReducer.getPurchaseList);
@@ -89,7 +89,7 @@ const Purchase = ({ navigation }) => {
             <MdEdit
               className="text-success cursor-pointer"
               size={18}
-              onClick={() => onPurchaseDetails(record, index)}onEditForm
+              onClick={() => onPurchaseDetails(record, index)} onEditForm
             ></MdEdit>
             <MdDelete
               className="text-danger cursor-pointer"
@@ -107,15 +107,15 @@ const Purchase = ({ navigation }) => {
   ];
 
   const [state, setState] = useState({
-    supplierId : {},
-    productId : {},
-    qty : "",
-    payment : "",
-    advanceAmount : "",
-    pendingAmount : "",
-    totalAmount : "",
-    transportCharge : "",
-    amount : ""
+    supplierId: {},
+    productId: {},
+    qty: "",
+    payment: "",
+    advanceAmount: "",
+    pendingAmount: "",
+    totalAmount: "",
+    transportCharge: "",
+    amount: ""
 
   })
   const [parentList, setParentList] = useState([])
@@ -142,7 +142,7 @@ const Purchase = ({ navigation }) => {
       dispatch({ type: "RESET_GET_PURCHASE" })
     }
   }, [getPurchaseSuccess, getPurchaseFailure]);
-  
+
   useEffect(() => {
     if (getSupplierSuccess) {
       setState({
@@ -179,14 +179,14 @@ const Purchase = ({ navigation }) => {
       dispatch({ type: "RESET_GET_PURCHASE_DETAILS" })
     }
   }, [getPurchaseDetailsSuccess, getPurchaseDetailsFailure]);
-  
+
   useEffect(() => {
     if (getPaymentEntrySuccess) {
       setState({
         ...state,
         paymentEntryList: getPaymentEntryList,
-        advanceAmount : getPaymentEntryList[0]?.advanceAmt || "0",
-        pendingAmount : getPaymentEntryList[0]?.pendingAmt || "0",
+        advanceAmount: getPaymentEntryList[0]?.advanceAmt || "0",
+        pendingAmount: getPaymentEntryList[0]?.pendingAmt || "0",
       })
       dispatch({ type: "RESET_GET_PAYMENT_ENTRY" })
     } else if (getPaymentEntryFailure) {
@@ -197,7 +197,7 @@ const Purchase = ({ navigation }) => {
       dispatch({ type: "RESET_GET_PAYMENT_ENTRY" })
     }
   }, [getPaymentEntrySuccess, getPaymentEntryFailure]);
-  
+
   useEffect(() => {
     if (getProductSuccess) {
       setState({
@@ -295,22 +295,22 @@ const Purchase = ({ navigation }) => {
   }
 
   useEffect(() => {
-   if(state.payment != "" && state.amount != "" && state.advanceAmount != ""){
-    const paymentCur = state?.payment || 0
-    const transportChar = state.transportCharge == "" ? 0 : state.transportCharge
-    const totalAmount = parseInt(state.amount) - parseInt(state.advanceAmount) + parseInt(transportChar)
-    const pendingAmt =  parseInt(totalAmount) - parseInt(paymentCur)
-    setState({
-      ...state,
-      totalAmount : totalAmount,
-      pendingAmount : pendingAmt
-    })
-   }
-  }, [state.payment,state.amount, state.transportCharge , state.advanceAmount ]);
+    if (state.amount != "") {
+      const paymentCur = state?.payment || 0
+      const transportChar = state.transportCharge == "" ? 0 : state.transportCharge
+      const totalAmount = parseInt(state?.amount || 0) - parseInt(state?.advanceAmount || 0) + parseInt(transportChar)
+      const pendingAmt = parseInt(totalAmount) - parseInt(paymentCur)
+      setState({
+        ...state,
+        totalAmount: totalAmount,
+        pendingAmount: pendingAmt
+      })
+    }
+  }, [state.payment, state.amount, state.transportCharge, state.advanceAmount]);
 
-  const onHandleSupplier = (selectedData, index, name)=>{
+  const onHandleSupplier = (selectedData, index, name) => {
     const requestData = {
-      supplierId : selectedData.supplierId
+      supplierId: selectedData.supplierId
     }
     dispatch(getPaymentEntry(requestData))
     setState({
@@ -319,22 +319,23 @@ const Purchase = ({ navigation }) => {
     })
   }
 
-  const onHandleQuantity = (event, index)=>{
+  const onHandleQuantity = (event, index) => {
     const selecedVal = event.target.value == "" ? 0 : event.target.value
     const amountCal = parseInt(selecedVal) * parseInt(state.productId.amount)
     setState({
       ...state,
       [event.target.name]: event.target.value,
-      amount : amountCal
+      amount: amountCal,
+
     })
   }
 
-  const onHandleProduct = (selectedData, index, name)=>{
+  const onHandleProduct = (selectedData, index, name) => {
     setState({
       ...state,
       [name]: selectedData,
-      amount : selectedData?.amount || 0,
-      qty : 1
+      amount: selectedData?.amount || 0,
+      qty: 1
     })
   }
 
@@ -343,15 +344,17 @@ const Purchase = ({ navigation }) => {
     const selectedProductObj = filterArray(state.productList, "productId", data.productId)
     setState({
       ...state,
-      supplierId: selectedSupplierObj || "",
-      productId: selectedProductObj || "",
+      supplierId: selectedSupplierObj[0] || "",
+      productId: selectedProductObj[0] || "",
       qty: data?.qty || "",
       amount: data?.amount || "",
       payment: data?.paidAmount || "",
       transportCharge: data?.transportCharge || "",
       advanceAmount: data?.advanceAmt || "",
-      pendingAmount: data?.pendingAmount || "0",
-      totalAmount: data?.totalAmount || "",
+      pendingAmount: data?.pendingAmt || "0",
+      totalAmount: parseInt(data?.amount || 0) + parseInt(data?.transportCharge) || "",
+      paymentDate: data.purchaseDate ? updateDateConversion(data.purchaseDate, "DD-MM-YYYY") : "",
+      perviousDate: data.purchaseDate ? updateDateConversion(data.purchaseDate, "DD-MM-YYYY") : "",
     })
     editData = true
     setCreateModule(true)
@@ -361,30 +364,41 @@ const Purchase = ({ navigation }) => {
     const ErrorHandles = errorHandles.current.onSubmitForm();
   }
 
-  const onSubmitForm = () => {
-    const dateChecker = state.paymentDate._i && state.paymentDate._i == state.perviousDate._i ? moment(state.paymentDate). add(1, 'days').format('YYYY-MM-DD') : dateConversion(state.paymentDate, "YYYY-MM-DD")
+  const onDeleteForm = () => {
     const request = {
-      supplierId: supplierId.supplierId ,
+      isDelete: 1,
+      paymentHistoryId : selectedItem.paymentHistoryId,
+      supplierId: selectedItem.supplierId,
+    }
+    dispatch(updatePurchase(request, selectedItem.purchaseId))
+  }
+
+  const onSubmitForm = () => {
+    const dateChecker = state.paymentDate._i && state.paymentDate._i == state.perviousDate._i ? moment(state.paymentDate).add(1, 'days').format('YYYY-MM-DD') : dateConversion(state.paymentDate, "YYYY-MM-DD")
+    const request = {
+      supplierId: supplierId.supplierId,
       productId: productId.productId,
       qty: qty,
       amount: amount,
-      paidAmount: payment,
+      paidAmount: parseInt(payment) + parseInt(advanceAmount),
       transportCharge: transportCharge,
-      paymentEntryDetails : {
-        supplierId: supplierId.supplierId ,
-        pendingAmount : pendingAmount,
-        paidAmount : payment,
-        lastPayDate : dateChecker,
-        advanceAmt : 0
+      purchaseDate: dateChecker,
+      paymentEntryDetails: {
+        supplierId: supplierId.supplierId,
+        pendingAmt: pendingAmount,
+        paidAmt: parseInt(payment) + parseInt(advanceAmount),
+        lastPayDate: dateChecker,
+        advanceAmt: 0
       },
-      paymentHistory : {
-        supplierId: supplierId.supplierId ,
-        paidAmount : payment,
-        balanceAmount : pendingAmount,
-        paymentDate : dateChecker
+      paymentHistory: {
+        supplierId: supplierId.supplierId,
+        paidAmount: parseInt(payment) + parseInt(advanceAmount),
+        balanceAmount: pendingAmount,
+        paymentDate: dateChecker
       }
     }
     if (editData) {
+      request.paymentHistory.paymentHistoryId = selectedItem.paymentHistoryId
       dispatch(updatePurchase(request, selectedItem.purchaseId))
     }
     else if (deleteModule) {
@@ -417,7 +431,7 @@ const Purchase = ({ navigation }) => {
         <FormLayout dynamicForm={purchaseForm} noOfColumns={2} onChangeCallBack={{ "onHandleQuantity": onHandleQuantity, "onHandleSupplier": onHandleSupplier, "onHandleProduct": onHandleProduct }} defaultState={state} setDefaultState={setState} ref={errorHandles} onSubmit={onSubmitForm} ></FormLayout>
       </ModalViewBox>
 
-      <ModalViewBox show={deleteModule} size="sm" savetitle={"confirm"} setshow={setDeleteModule} onSubmit={onSubmitForm} title={`Delete Purchase`}>
+      <ModalViewBox show={deleteModule} size="sm" savetitle={"confirm"} setshow={setDeleteModule} onSubmit={onDeleteForm} title={`Delete Purchase`}>
         <p>Once Again Are you sure..?</p>
       </ModalViewBox>
 

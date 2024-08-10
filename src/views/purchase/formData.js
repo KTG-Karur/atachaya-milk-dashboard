@@ -48,6 +48,7 @@ const purchaseForm = [
                 "label": "Amount",
                 "name": "amount",
                 "inputType": "text",
+                "disable" : true,
                 "required": true
             },
             {

@@ -11,6 +11,7 @@ import { filterArray, showConfirmationDialog, showMessage } from "../../utils/ap
 import TempView from "../../components/Atom/TempView";
 import { Link } from "react-router-dom";
 import { getCenter } from "../../api/CenterApi";
+import { getRole } from "../../api/RoleApi";
 
 let editData = false;
 
@@ -22,6 +23,10 @@ const Employee = ({ navigation }) => {
   const getEmployeeSuccess = useSelector((state) => state.employeeReducer.getEmployeeSuccess);
   const getEmployeeList = useSelector((state) => state.employeeReducer.getEmployeeList);
   const getEmployeeFailure = useSelector((state) => state.employeeReducer.getEmployeeFailure);
+
+  const getRoleSuccess = useSelector((state) => state.roleReducer.getRoleSuccess);
+  const getRoleList = useSelector((state) => state.roleReducer.getRoleList);
+  const getRoleFailure = useSelector((state) => state.roleReducer.getRoleFailure);
 
   const getCenterSuccess = useSelector((state) => state.centerReducer.getCenterSuccess);
   const getCenterList = useSelector((state) => state.centerReducer.getCenterList);
@@ -131,6 +136,10 @@ const Employee = ({ navigation }) => {
         ...state,
         centerList: getCenterList
       })
+      const requestData = {
+        isActive: 1
+      }
+      dispatch(getRole(requestData))
       dispatch({ type: "RESET_GET_CENTER" })
     } else if (getCenterFailure) {
       setState({
@@ -140,6 +149,22 @@ const Employee = ({ navigation }) => {
       dispatch({ type: "RESET_GET_CENTER" })
     }
   }, [getCenterSuccess, getCenterFailure]);
+
+  useEffect(() => {
+    if (getRoleSuccess) {
+      setState({
+        ...state,
+        roleList: getRoleList
+      })
+      dispatch({ type: "RESET_GET_ROLE" })
+    } else if (getRoleFailure) {
+      setState({
+        ...state,
+        roleList: []
+      })
+      dispatch({ type: "RESET_GET_ROLE" })
+    }
+  }, [getRoleSuccess, getRoleFailure]);
 
   useEffect(() => {
     if (createEmployeeSuccess) {
@@ -194,6 +219,7 @@ const Employee = ({ navigation }) => {
       ifscCode: "",
       branchName: "",
       centerId: "",
+      roleId: "",
       userName: "",
       password: "",
       accountNo: "",
@@ -216,6 +242,7 @@ const Employee = ({ navigation }) => {
   const onEditForm = (data, index) => {
     setGetViewModule(false)
     const selectedCenterObj = filterArray(state.centerList, "centerId", data.centerId)
+    const selectedRoleObj = filterArray(state.roleList, "roleId", data.roleId)
     setState({
       ...state,
       userName: data?.userName || "",
@@ -226,7 +253,8 @@ const Employee = ({ navigation }) => {
       ifscCode: data?.ifscCode || "",
       branchName: data?.branchName || "",
       accountNo: data?.accountNo || "",
-      centerId: selectedCenterObj || {},
+      centerId: selectedCenterObj[0] || {},
+      roleId: selectedRoleObj[0] || {},
     })
     editData = true
     setCreateModule(true)
@@ -246,13 +274,15 @@ const Employee = ({ navigation }) => {
       ifscCode: ifscCode,
       branchName: branchName,
       centerId: centerId?.centerId || "",
-      userName: userName,
-      password: password,
+      roleId: roleId?.roleId || "",
       accountNo: accountNo,
+      userDetails :{
+        userName: userName,
+        password: password,
+      }
     }
     if (editData) {
-      delete request.userName;
-      delete request.password;
+      delete request.userDetails;
       dispatch(updateEmployee(request, selectedItem.employeeId))
     }
     else if (deleteModule) {
@@ -268,6 +298,7 @@ const Employee = ({ navigation }) => {
   const {
     employeeName,
     contactNo,
+    roleId,
     bankName,
     ifscCode,
     branchName,

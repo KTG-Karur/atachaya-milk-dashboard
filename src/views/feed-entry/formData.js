@@ -14,6 +14,23 @@ const feedEntryForm = [
                 "optionList": "centerList",
                 "displayKey": "centerName",
                 "uniqueKey": "centerId",
+                "onChange" : "onHandleCustomer",
+                "required": true,
+                "error" : false,
+            },
+            {
+                "label": "Customer",
+                "name": "customerId",
+                "inputType": "select",
+                "optionList": "customerList",
+                "displayKey": "customerName",
+                "uniqueKey": "customerId",
+                "required": true,
+            },
+            {
+                "label": "Quantity",
+                "name": "quantity",
+                "inputType": "text",
                 "required": true
             },
             {

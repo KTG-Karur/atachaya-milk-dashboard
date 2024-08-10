@@ -20103,3 +20103,8 @@ input.form-control::placeholder {
 .swal-icon-custom{
   margin: auto !important;
 }
+
+.hover-effect li:hover {
+  background-color: rgba(38, 17, 85, 0.05);
+  color: #7539FF;
+}

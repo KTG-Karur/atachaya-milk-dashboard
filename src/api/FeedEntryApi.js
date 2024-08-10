@@ -59,9 +59,9 @@ export function createFeedEntry(request) {
   }
 }
 
-export function updateFeedEntry(request, feedEntryId) {
+export function updateFeedEntry(request, feedEntryHistoryId) {
   return (dispatch) => {
-    apiReturnCallBack("PUT", feedEntry +`/${feedEntryId}` , request)
+    apiReturnCallBack("PUT", feedEntry +`/${feedEntryHistoryId}` , request)
       .then(response => {
 
         if (response.data.error) {

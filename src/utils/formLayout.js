@@ -6,7 +6,7 @@ import _ from "lodash";
 
 const FormLayout =React.forwardRef(({ ...props }, ref)  => {
 
-    const { noOfColumns = 1, dynamicForm, defaultState, setDefaultState, onChangeCallBack, onClick, onSubmit } = props
+    const { noOfColumns = 1, dynamicForm, defaultState, setDefaultState, onChangeCallBack, onClick, onSubmit, customAlign = false } = props
     const [errorState, setErrorState] = useState(false)
     const [errorFields, setErrorFields] = useState(false)
 
@@ -46,18 +46,33 @@ const FormLayout =React.forwardRef(({ ...props }, ref)  => {
     return (
         <>
             <div className="row" >
-                {dynamicForm.map((item, index) => (
-                    <React.Fragment key={index}>
-                        <div key={index} className={screenWidth > 500 ? `col-${noOfCol || 12}` : "col-12"}>
-                            {item.title == "true" ? <h4 style={{ fontWeight: 600, fontSize: '21px', borderBottom: "3px solid transparent", width: "fit-content", letterSpacing: "1.5px" }}>&nbsp;</h4> : (item.title) ? <h4 style={{ fontWeight: 600, fontSize: '21px', borderBottom: "3px solid #d1d1d1", width: "fit-content", letterSpacing: "1.5px" }}>{item?.title}{/* {capsLetter(item?.title)} */}</h4> : ""}
-                            {
-                                item.formFields.map((ele, idx) => (
-                                    <FormComponent key={idx} field={ele} removeErrorHandle={removeErrorHandle} state={defaultState} errorHandleFields={errorFields} setState={setDefaultState} onChangeCallBack={onChangeCallBack} onClick={onClick}></FormComponent>
-                                ))
-                            }
-                        </div>
-                    </React.Fragment>
-                ))}
+                {
+                    customAlign == true ? dynamicForm.map((item, index) => (
+                        <React.Fragment key={index}>
+                            <div key={index} className="row">
+                                {
+                                    item.formFields.map((ele, idx) => (
+                                        <div className={`${ele?.classStyle || "col-12"}`}>
+                                        <FormComponent key={idx} field={ele} removeErrorHandle={removeErrorHandle} state={defaultState} errorHandleFields={errorFields} setState={setDefaultState} onChangeCallBack={onChangeCallBack} onClick={onClick}></FormComponent>
+                                        </div>
+                                    ))
+                                }
+                            </div>
+                        </React.Fragment>
+                    )) : dynamicForm.map((item, index) => (
+                        <React.Fragment key={index}>
+                            <div key={index} className={screenWidth > 500 ? `col-${noOfCol || 12}` : "col-12"}>
+                                {item.title == "true" ? <h4 style={{ fontWeight: 600, fontSize: '21px', borderBottom: "3px solid transparent", width: "fit-content", letterSpacing: "1.5px" }}>&nbsp;</h4> : (item.title) ? <h4 style={{ fontWeight: 600, fontSize: '21px', borderBottom: "3px solid #d1d1d1", width: "fit-content", letterSpacing: "1.5px" }}>{item?.title}{/* {capsLetter(item?.title)} */}</h4> : ""}
+                                {
+                                    item.formFields.map((ele, idx) => (
+                                        <FormComponent key={idx} field={ele} removeErrorHandle={removeErrorHandle} state={defaultState} errorHandleFields={errorFields} setState={setDefaultState} onChangeCallBack={onChangeCallBack} onClick={onClick}></FormComponent>
+                                    ))
+                                }
+                            </div>
+                        </React.Fragment>
+                    ))
+                }
+              
             </div>
         </>
     )

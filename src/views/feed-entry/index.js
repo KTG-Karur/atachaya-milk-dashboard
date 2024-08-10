@@ -7,9 +7,11 @@ import TemplateCustomTable from "../../components/TemplateComponent.js/TemplateT
 import ModalViewBox from "../../components/Atom/ModelViewBox";
 import FormLayout from "../../utils/formLayout";
 import { feedEntryForm } from "./formData";
-import { dateConversionNormal, filterArray, showConfirmationDialog, showMessage, updateDateConversion } from "../../utils/applicationFun";
+import { dateConversion, dateConversionNormal, filterArray, showConfirmationDialog, showMessage, updateDateConversion } from "../../utils/applicationFun";
 import { getCenter } from "../../api/CenterApi";
 import moment from "moment";
+import { getCustomer } from "../../api/CustomerApi";
+import { getFeedEntryHistory } from "../../api/FeedEntryHistoryApi";
 
 let editData = false;
 
@@ -25,6 +27,14 @@ const FeedEntry = ({ navigation }) => {
   const getFeedEntrySuccess = useSelector((state) => state.feedEntryReducer.getFeedEntrySuccess);
   const getFeedEntryList = useSelector((state) => state.feedEntryReducer.getFeedEntryList);
   const getFeedEntryFailure = useSelector((state) => state.feedEntryReducer.getFeedEntryFailure);
+
+  const getFeedEntryHistorySuccess = useSelector((state) => state.feedEntryHistoryReducer.getFeedEntryHistorySuccess);
+  const getFeedEntryHistoryList = useSelector((state) => state.feedEntryHistoryReducer.getFeedEntryHistoryList);
+  const getFeedEntryHistoryFailure = useSelector((state) => state.feedEntryHistoryReducer.getFeedEntryHistoryFailure);
+
+  const getCustomerSuccess = useSelector((state) => state.customerReducer.getCustomerSuccess);
+  const getCustomerList = useSelector((state) => state.customerReducer.getCustomerList);
+  const getCustomerFailure = useSelector((state) => state.customerReducer.getCustomerFailure);
   
   const getCenterSuccess = useSelector((state) => state.centerReducer.getCenterSuccess);
   const getCenterList = useSelector((state) => state.centerReducer.getCenterList);
@@ -48,8 +58,8 @@ const FeedEntry = ({ navigation }) => {
     },
     {
       title: "Feed Entry Date",
-      dataIndex: "feedEntryDate",
-      key: "feedEntryDate",
+      dataIndex: "paymentDate",
+      key: "paymentDate",
       render: (record) => {
         const selectedDate = dateConversionNormal(record, "DD-MM-YYYY")
         return (
@@ -65,6 +75,11 @@ const FeedEntry = ({ navigation }) => {
       key: "centerName",
     },
     {
+      title: "Customer Name",
+      dataIndex: "customerName",
+      key: "customerName",
+    },
+    {
       title: "Amount",
       dataIndex: "amount",
       key: "amount",
@@ -78,7 +93,7 @@ const FeedEntry = ({ navigation }) => {
              <MdEdit
               className="text-success cursor-pointer"
               size={18}
-              onClick={() => onEditForm(record, index)}
+              onClick={() => customerDataFilter(record, index)}
             ></MdEdit>
             <MdDelete
               className="text-danger cursor-pointer"
@@ -107,11 +122,11 @@ const FeedEntry = ({ navigation }) => {
     const requestData = {
       isActive: 1
     }
-    dispatch(getFeedEntry(requestData))
+    dispatch(getFeedEntryHistory(requestData))
     dispatch(getCenter(requestData))
   }, [navigation]);
 
-  useEffect(() => {
+/*   useEffect(() => {
     if (getFeedEntrySuccess) {
       setParentList(getFeedEntryList)
       dispatch({ type: "RESET_GET_FEED_ENTRY" })
@@ -119,7 +134,17 @@ const FeedEntry = ({ navigation }) => {
       setParentList([])
       dispatch({ type: "RESET_GET_FEED_ENTRY" })
     }
-  }, [getFeedEntrySuccess, getFeedEntryFailure]);
+  }, [getFeedEntrySuccess, getFeedEntryFailure]); */
+
+  useEffect(() => {
+    if (getFeedEntryHistorySuccess) {
+      setParentList(getFeedEntryHistoryList)
+      dispatch({ type: "RESET_GET_FEED_ENTRY_HISTORY" })
+    } else if (getFeedEntryHistoryFailure) {
+      setParentList([])
+      dispatch({ type: "RESET_GET_FEED_ENTRY_HISTORY" })
+    }
+  }, [getFeedEntryHistorySuccess, getFeedEntryHistoryFailure]);
 
   useEffect(() => {
     if (getCenterSuccess) {
@@ -136,6 +161,22 @@ const FeedEntry = ({ navigation }) => {
       dispatch({ type: "RESET_GET_CENTER" })
     }
   }, [getCenterSuccess, getCenterFailure]);
+
+  useEffect(() => {
+    if (getCustomerSuccess) {
+      setState({
+        ...state,
+        customerList: getCustomerList
+      })
+      dispatch({ type: "RESET_GET_CUSTOMER" })
+    } else if (getCustomerFailure) {
+      setState({
+        ...state,
+        customerList: []
+      })
+      dispatch({ type: "RESET_GET_CUSTOMER" })
+    }
+  }, [getCustomerSuccess, getCustomerFailure]);
 
   useEffect(() => {
     if (createFeedEntrySuccess) {
@@ -174,6 +215,33 @@ const FeedEntry = ({ navigation }) => {
     closeModule()
   }
 
+  const customerDataFilter = (data, index)=>{
+    editData = true
+    setSelectedIndex(index)
+    setSelectedItem(data)
+    const req={centerId : data.centerId}
+    dispatch(getCustomer(req))
+  }
+
+  useEffect(() => {
+    if (editData) {
+      const data = selectedItem
+      const index = selectedIndex
+      const selectedCenterObj = filterArray(state.centerList, "centerId", data.centerId)
+      const selectedCustomerObj = filterArray(state.customerList, "customerId", data.customerId)
+      setState({
+        ...state,
+        feedEntryDate: data.paymentDate ? updateDateConversion(data.paymentDate, "DD-MM-YYYY") : "",
+        perviousDate : data.paymentDate ? updateDateConversion(data.paymentDate, "DD-MM-YYYY") : "",
+        centerId : selectedCenterObj[0] || "",
+        customerId : selectedCustomerObj[0] || "",
+        amount : data?.amount || "",
+        quantity : data?.quantity || "",
+      })
+      setCreateModule(true)
+    } 
+  }, [state.customerList]);
+
   const onDeleteItem = (data, index) => {
     setSelectedIndex(index)
     setSelectedItem(data)
@@ -191,8 +259,11 @@ const FeedEntry = ({ navigation }) => {
       ...state,
       feedEntryDate: "",
       centerId: "",
+      customerId: "",
+      quantity: "",
       amount: "",
     })
+    editData = false
   }
 
   const onCreateForm = () => {
@@ -201,19 +272,15 @@ const FeedEntry = ({ navigation }) => {
     setCreateModule(true)
   }
 
-  const onEditForm = (data, index) => {
-    const selectedCenterObj = filterArray(state.centerList, "centerId", data.centerId)
+  const onHandleCustomer = (selectedData, index, name) => {
+    const requestData = {
+      centerId: selectedData.centerId
+    }
+    dispatch(getCustomer(requestData))
     setState({
       ...state,
-      feedEntryDate: data.feedEntryDate ? updateDateConversion(data.feedEntryDate, "DD-MM-YYYY") : "",
-      perviousDate : data.feedEntryDate ? updateDateConversion(data.feedEntryDate, "DD-MM-YYYY") : "",
-      centerId : selectedCenterObj || "",
-      amount : data?.amount || "",
+      [name]: selectedData,
     })
-    editData = true
-    setCreateModule(true)
-    setSelectedIndex(index)
-    setSelectedItem(data)
   }
 
   const onValidateForm = async () => {
@@ -221,14 +288,22 @@ const FeedEntry = ({ navigation }) => {
   }
 
   const onSubmitForm = () => {
-    const dateChecker = state.feedEntryDate == state.perviousDate ? moment(state.feedEntryDate). add(1, 'days').format('YYYY-MM-DD') : dateConversionNormal(state.feedEntryDate, "YYYY-MM-DD")
+    const dateChecker = state.feedEntryDate == state.perviousDate ? moment(state.feedEntryDate). add(1, 'days').format('YYYY-MM-DD') : dateConversion (state.feedEntryDate, "YYYY-MM-DD")
     const request = {
       feedEntryDate: dateChecker,
       centerId: centerId.centerId,
+      customerId: customerId.customerId,
       amount: amount,
+      feedEntryHistory : {
+      centerId: centerId.centerId,
+      customerId: customerId.customerId,
+      paymentDate: dateChecker,
+      quantity: quantity,
+      amount: amount,
+      }
     }
     if (editData) {
-      dispatch(updateFeedEntry(request, selectedItem.feedEntryId))
+      dispatch(updateFeedEntry(request, selectedItem.feedEntryHistoryId))
     }
     else if (deleteModule) {
       const deleteRequest = {
@@ -242,7 +317,9 @@ const FeedEntry = ({ navigation }) => {
 
   const {
     amount,
-    centerId
+    centerId,
+    customerId,
+    quantity
   } = state;
 
   const modelHeaderTitle = editData != true ? "Create" : "Edit"
@@ -251,7 +328,7 @@ const FeedEntry = ({ navigation }) => {
   return (
     <>
       <ModalViewBox show={createModule} size="md" savetitle={modelBtn} setshow={setCreateModule} onSubmit={onValidateForm} title={`${modelHeaderTitle} FeedEntry`}>
-        <FormLayout dynamicForm={feedEntryForm} noOfColumns={1} defaultState={state} setDefaultState={setState} ref={errorHandles} onSubmit={onSubmitForm} ></FormLayout>
+        <FormLayout dynamicForm={feedEntryForm} onChangeCallBack={{ "onHandleCustomer": onHandleCustomer }} noOfColumns={1} defaultState={state} setDefaultState={setState} ref={errorHandles} onSubmit={onSubmitForm} ></FormLayout>
       </ModalViewBox>
 
       <ModalViewBox show={deleteModule} size="sm" savetitle={"confirm"} setshow={setDeleteModule} onSubmit={onSubmitForm} title={`Delete FeedEntry`}>

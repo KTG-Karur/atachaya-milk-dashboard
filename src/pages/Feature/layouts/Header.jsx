@@ -71,8 +71,8 @@ const Header = memo((props) => {
   return (
     <>
       <Helmet>
-        <title>Jayam Steel & Roofing</title>
-        <meta name="description" content="Kanakku" />
+        <title>KTG-Milk Management System</title>
+        <meta name="description" content="KTG-Milk Management System" />
         <link
           rel="icon"
           href={companyData?.favicon ? companyData?.favicon : AlterFavIcon}

@@ -30,6 +30,17 @@ import Shift from "../views/shift";
 import Supplier from "../views/supplier";
 import Purchase from "../views/purchase";
 import Advance from "../views/advance";
+import NewPaymentEntry from "../views/payment-entry";
+import StockTransfer from "../views/stock-transfer";
+import CommissionType from "../views/commission-type";
+import CommissionSettings from "../views/commission-settings";
+import Salary from "../views/salary";
+import TransportSettings from "../views/transport-settings";
+import TransportDriver from "../views/transport-driver";
+import TransportEntry from "../views/transport-entry";
+import TankerSupplier from "../views/tanker-supplier";
+import TankerEntry from "../views/tanker-entry";
+import CustomerAdvance from "../views/customer-advance";
 
 export const unAuthRoutes = [
   {
@@ -80,6 +91,10 @@ export const authRoutes = [
     element: <CustomDashboard />,
   },
   {
+    path: "/payment-entry",
+    element: <NewPaymentEntry />,
+  },
+  {
     path: "/shift",
     element: <Shift />,
   },
@@ -92,8 +107,48 @@ export const authRoutes = [
     element: <PaymentMode />,
   },
   {
+    path: "/commission-type",
+    element: <CommissionType />,
+  },
+  {
+    path: "/customer-advance",
+    element: <CustomerAdvance />,
+  },
+  {
+    path: "/commission-settings",
+    element: <CommissionSettings />,
+  },
+  {
+    path: "/tanker-entry",
+    element: <TankerEntry />,
+  },
+  {
+    path: "/tanker-supplier",
+    element: <TankerSupplier />,
+  },
+  {
+    path: "/transport-settings",
+    element: <TransportSettings />,
+  },
+  {
+    path: "/transport-entry",
+    element: <TransportEntry />,
+  },
+  {
+    path: "/transport-driver",
+    element: <TransportDriver />,
+  },
+  {
+    path: "/center-salary",
+    element: <Salary />,
+  },
+  {
     path: "/supplier",
     element: <Supplier />,
+  },
+  {
+    path: "/stock-transfer",
+    element: <StockTransfer />,
   },
   {
     path: "/advance",

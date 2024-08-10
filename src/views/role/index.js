@@ -113,7 +113,8 @@ const Role = ({ navigation }) => {
 
   useEffect(() => {
     const requestData = {
-      isActive: 1
+      isActive: 1,
+      parentId : false
     }
     dispatch(getRole(requestData))
     dispatch(getPages(requestData))

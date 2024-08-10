@@ -2,127 +2,170 @@ export const navigationMenu = [
     {
         "title": "Main",
         "pageName": "Dashboard",
-        "icon": "home",
+        "icon": "pie-chart",
         "path": "/index",
     },
     {
-        "title": "Entry",
-        "pageName": "Daily Entry",
-        "icon": "users",
-        "path": "/daily-entry",
+        title: "Entry",
+        icon: "printer",
+        submenu: [
+            {
+                title: "Daily Entry",
+                path: "/daily-entry",
+                icon: "edit"
+            },
+            {
+                title: "Feed Entry",
+                path: "/feed-entry",
+                icon: "edit-2"
+            },
+            {
+                title: "Expensive",
+                path: "/expensive",
+                 icon: "credit-card"
+            },
+            {
+                title: "Stock Transfer",
+                path: "/stock-transfer",
+                icon: "database"
+            },
+        ],
     },
     {
-        "title": "Employee",
-        "pageName": "Employee",
-        "icon": "users",
-        "path": "/employee",
+        title: "Customer",
+        icon: "user-plus",
+        submenu: [
+            {
+                title: "Customers",
+                path: "/customer",
+                icon: "users"
+            },
+            {
+                title: "Advance Entry",
+                path: "/customer-advance",
+                icon: "fast-forward"
+            },
+        ],
     },
     {
-        "title": "",
-        "pageName": "Center",
-        "icon": "users",
-        "path": "/center",
+        title: "Employee",
+        icon: "users",
+        submenu: [
+            {
+                title: "Salary",
+                path: "/center-salary",
+                icon: "dollar-sign"
+            },
+            {
+                title: "Employee",
+                path: "/employee",
+                icon: "users"
+            },
+            {
+                title: "Role",
+                path: "/role",
+                icon: "aperture"
+            },
+        ],
     },
     {
-        "title": "",
-        "pageName": "Payment Mode",
-        "icon": "users",
-        "path": "/payment-mode",
+        title: "Supplier",
+        icon: "user-check",
+        submenu: [
+            {
+                title: "Payment Entry",
+                path: "/payment-entry",
+                icon: "airplay"
+            },
+            {
+                title: "Advance Entry",
+                path: "/advance",
+                icon: "book-open"
+            },
+            {
+                title: "Purchase",
+                path: "/purchase",
+                icon: "shopping-cart"
+            },
+            {
+                title: "Supplier",
+                path: "/supplier",
+                icon: "truck"
+            },
+        ],
     },
     {
-        "title": "",
-        "pageName": "Expensive",
-        "icon": "users",
-        "path": "/expensive",
+        title: "Transport",
+        icon: "truck",
+        submenu: [
+            {
+                title: "Transport Entry",
+                path: "/transport-entry",
+                icon: "truck"
+            },
+            {
+                title: "Driver",
+                path: "/transport-driver",
+                icon: "user-check"
+            },
+        ],
     },
     {
-        "title": "",
-        "pageName": "Feed Entry",
-        "icon": "users",
-        "path": "/feed-entry",
+        title: "Tanker",
+        icon: "map-pin",
+        submenu: [
+            {
+                title: "Tanker Entry",
+                path: "/tanker-entry",
+                icon: "truck"
+            },
+            {
+                title: "Tanker Supplier",
+                path: "/tanker-supplier",
+                icon: "user-check"
+            },
+        ],
     },
     {
-        "title": "",
-        "pageName": "Shift",
-        "icon": "users",
-        "path": "/shift",
+        title: "Master",
+        icon: "menu",
+        submenu: [
+            {
+                title: "Payment Mode",
+                path: "/payment-mode",
+                icon: "cast"
+            },
+            {
+                title: "Commission Type",
+                path: "/commission-type",
+                icon: "sliders"
+            },
+            {
+                title: "Shift",
+                path: "/shift",
+                icon: "clock"
+            },
+            {
+                title: "Product",
+                path: "/product",
+                icon: "shopping-bag"
+            },
+        ],
     },
     {
-        "title": "",
-        "pageName": "Supplier",
-        "icon": "users",
-        "path": "/supplier",
-    },
-    {
-        "title": "",
-        "pageName": "Purchase",
-        "icon": "users",
-        "path": "/purchase",
-    },
-    {
-        "title": "",
-        "pageName": "Advance",
-        "icon": "users",
-        "path": "/advance",
-    },
-    {
-        "title": "Customers",
-        "pageName": "Customers",
-        "icon": "users",
-        "path": "/customer",
-    },
-    {
-        "title": "Report",
-        "pageName": "Sales Quotation",
-        "icon": "users",
-        "path": "/sales-report",
-    },
-    {
-        "title": "",
-        "pageName": "Confirm Quotation",
-        "icon": "users",
-        "path": "/confirm-report",
-    },
-    {
-        "title": "",
-        "pageName": "Cancel Quotation",
-        "icon": "users",
-        "path": "/cancel-report",
-    },
-    {
-        "title": "Master",
-        "pageName": "Product",
-        "icon": "users",
-        "path": "/product",
-    },
-    {
-        "title": "",
-        "pageName": "Role",
-        "icon": "users",
-        "path": "/role",
-    },
-    {
-        "title": "",
-        "pageName": "Customer Category",
-        "icon": "shopping-cart",
-        "path": "/customer-category",
-    },
-    {
-        "title": "",
-        "pageName": "Color",
-        "icon": "users",
-        "path": "/color",
-    },
-    {
-        "title": "",
-        "pageName": "Product Unit",
-        "icon": "users",
-        "path": "/product-unit",
-    },
-    {
-        "title": "",
-        "pageName": "Quotation Status",
-        "icon": "users",
-        "path": "/quotation-status",
+        title: "Settings",
+        icon: "settings",
+        submenu: [
+            {
+                title: "Commission",
+                path: "/commission-settings",
+                icon: "tool"
+            },
+            {
+                title: "Transport",
+                path: "/transport-settings",
+                icon: "settings"
+            },
+        ],
     },
 ]

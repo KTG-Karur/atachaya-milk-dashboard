@@ -15,6 +15,24 @@ const dailyEntryForm = [
     }
 ]
 
+const editByCustomerForm = [
+    {
+        formFields: [
+            {
+                "label": "Customer",
+                "name": "customerId",
+                "inputType": "select",
+                "optionList": "customerList",
+                "displayKey": "customerName",
+                "uniqueKey": "customerId",
+                "required": true,
+                "error" : false,
+            },
+        ]
+    }
+]
+
 export {
     dailyEntryForm,
+    editByCustomerForm,
 };

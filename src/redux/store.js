@@ -24,6 +24,22 @@ import PurchaseReducer from "./reducer/purchaseReducer";
 import ShiftReducer from "./reducer/shiftReducer";
 import SupplierReducer from "./reducer/supplierReducer";
 import PaymentEntryReducer from "./reducer/paymentEntryReducer";
+import NewPaymentEntryReducer from "./reducer/newPaymentEntryReducer";
+import EntryReducer from "./reducer/entryReducer";
+import EntryDetailsReducer from "./reducer/entryDetailsReducer";
+import StockTransferReducer from "./reducer/stockTransferReducer";
+import StockHubReducer from "./reducer/stockHubReducer";
+import CommissionSettingsReducer from "./reducer/commissionSettingsReducer";
+import CommissionTypeReducer from "./reducer/commissionTypeReducer";
+import SalaryReducer from "./reducer/salaryReducer";
+import TransportSettingsReducer from "./reducer/transportSettingsReducer";
+import TransportDriverReducer from "./reducer/transportDriverReducer";
+import TransportEntryReducer from "./reducer/transportEntryReducer";
+import TankerSupplierReducer from "./reducer/tankerSupplierReducer";
+import TankerEntryReducer from "./reducer/tankerEntryReducer";
+import CustomerAdvanceReducer from "./reducer/customerAdvanceReducer";
+import CustomerSalaryReducer from "./reducer/customerSalaryReducer";
+import FeedEntryHistoryReducer from "./reducer/feedEntryHistoryReducer";
 
 
 // Configure Redux store
@@ -43,6 +59,21 @@ const store = configureStore({
         quotationReportReducer : QuotationReportReducer,
         dashboardReducer : DashboardReducer,
         colorReducer : ColorReducer,
+        entryReducer : EntryReducer,
+        entryDetailsReducer : EntryDetailsReducer,
+        stockTransferReducer : StockTransferReducer,
+        stockHubReducer : StockHubReducer,
+        commissionSettingsReducer : CommissionSettingsReducer,
+        commissionTypeReducer : CommissionTypeReducer,
+        salaryReducer : SalaryReducer,
+        transportSettingsReducer : TransportSettingsReducer,
+        transportDriverReducer : TransportDriverReducer,
+        transportEntryReducer : TransportEntryReducer,
+        tankerSupplierReducer : TankerSupplierReducer,
+        tankerEntryReducer : TankerEntryReducer,
+        customerAdvanceReducer : CustomerAdvanceReducer,
+        customerSalaryReducer : CustomerSalaryReducer,
+        feedEntryHistoryReducer : FeedEntryHistoryReducer,
 
 
         centerReducer : CenterReducer,
@@ -56,6 +87,7 @@ const store = configureStore({
         shiftReducer : ShiftReducer,
         supplierReducer : SupplierReducer,
         paymentEntryReducer : PaymentEntryReducer,
+        newPaymentEntryReducer : NewPaymentEntryReducer,
     },
     devTools: process.env.NODE_ENV !== "production",
     middleware: (getDefaultMiddlewares) =>

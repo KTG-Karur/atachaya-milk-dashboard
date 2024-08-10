@@ -8,6 +8,8 @@ import { Logo, LogoImg, LogoSmallImg } from "../../../common/imagepath";
 import { useSelector } from "react-redux";
 import { setCurrentLoginUser, setcommonData } from "../../../constans/globals";
 import { navigationMenu } from "../../../navigationMenu";
+import { color } from "../../../api/ApiContainer";
+import { ChevronDown, ChevronRight } from 'react-feather';
 
 const Sidebar = () => {
   const { setloggedin } = useContext(AuthContext);
@@ -128,17 +130,30 @@ const Sidebar = () => {
 
   // const sideBarMenu = navigationMenu
   const userDetails = localStorage.getItem("userDetails")
-// const localData = JSON.parse(userDetails)
-// export const navigationMenu = userDetails.pages
-const reqDashboardObj =  {
-  "title": "Main",
-  "pageName": "Dashboard",
-  "icon": "home",
-  "path": "/index",
-}
-// localData?.pages.splice(0, 0, reqDashboardObj);
+  // const localData = JSON.parse(userDetails)
+  // export const navigationMenu = userDetails.pages
+  const reqDashboardObj = {
+    "title": "Main",
+    "pageName": "Dashboard",
+    "icon": "home",
+    "path": "/index",
+  }
+  // localData?.pages.splice(0, 0, reqDashboardObj);
   const sideBarMenu = navigationMenu
   // const sideBarMenu = localData?.pages || navigationMenu
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleToggle = (title, index, name) => {
+    if (name === "submenu") {
+      setIsOpen((prevIsOpen) => ({
+        ...prevIsOpen,
+        [index]: !prevIsOpen[index],
+      }));
+    } else {
+      setIsOpen((prevIsOpen) => ({ ...prevIsOpen, [title]: !prevIsOpen[title] }));
+    }
+  };
 
   return (
     <>
@@ -180,7 +195,54 @@ const reqDashboardObj =  {
         >
           <div className="sidebar-inner slimscroll">
             <div id="sidebar-menu" className="sidebar-menu">
-              {sideBarMenu.map((item,index) => {
+              {sideBarMenu.map((item, index) => (
+                <React.Fragment key={index}>
+                  {item.submenu ? (
+                   <ul >
+                    <div className="hover-effect">
+                   <li
+                     className={` p-1 ${isOpen[index] ? "active bg-light" : ""}`}
+                     onClick={() => handleToggle(item.title, index, "submenu")}
+                     
+                   >
+                     <FeatherIcon className="mx-2" style={{ fontSize: 16 }} icon={item.icon} />
+                     <span style={{ fontSize: 16 }}>{item.title}</span>
+                     <span className="d-block float-end">
+                    { isOpen[index] ? <ChevronDown className="mx-2" style={{ fontSize: 12 }} /> : <ChevronRight className="mx-2" style={{ fontSize: 12 }} />}
+                     </span>
+                   </li>
+                   </div>
+                   {
+                     item.submenu.map((subItem, subIndex) => {
+                       return (
+                         <li
+                           className={`p-1 mt-1 ${isOpen[index] ? "d-block" : "d-none"} ${subItem.path === pathName ? "active" : ""}`}
+                         >
+                           <Link to={subItem.path || "/index"} onClick={() => toggleSidebar("")}>
+                             <FeatherIcon icon={subItem?.icon || "home"} />
+                             <span>{subItem?.title || "Main"}</span>
+                           </Link>
+                         </li>
+                       );
+                     })
+                   }
+                 </ul>
+                  ) : (
+                    <ul>
+                      {item.title && <li className="menu-title">
+                        <span>{item?.title || ""}</span>
+                      </li>}
+                      <li className={`${item.path === pathName ? "active" : ""}`}>
+                        <Link to={item?.path || "/index"} onClick={() => toggleSidebar("")}>
+                          <FeatherIcon icon={item?.icon || "home"} />
+                          <span>{item?.pageName || "Main"}</span>
+                        </Link>
+                      </li >
+                    </ul>
+                  )}
+                </React.Fragment>
+              ))}
+              {/*  {sideBarMenu.map((item,index) => {
                 return (
                   <React.Fragment key={index}>
                     <ul>
@@ -196,9 +258,9 @@ const reqDashboardObj =  {
             </ul>
             </React.Fragment>
           )
-})}
-          {/* Main */}
-          {/* <ul>
+})} */}
+              {/* Main */}
+              {/* <ul>
                 <li className="menu-title">
                   <span>Main</span>
                 </li>
@@ -213,10 +275,10 @@ const reqDashboardObj =  {
                   </Link>
                 </li>
               </ul> */}
-          {/* /Main */}
+              {/* /Main */}
 
-          {/* Customers */}
-          {/*   <ul
+              {/* Customers */}
+              {/*   <ul
                 style={{
                   display:
                     showHide("customer") && showHide("vendor")
@@ -261,10 +323,10 @@ const reqDashboardObj =  {
                   </Link>
                 </li>
               </ul> */}
-          {/* /Customers */}
+              {/* /Customers */}
 
-          {/* Inventory */}
-          {/* <ul
+              {/* Inventory */}
+              {/* <ul
                 style={{
                   display:
                     showHide("productsOrServices") &&
@@ -397,10 +459,10 @@ const reqDashboardObj =  {
                   </Link>
                 </li>
               </ul> */}
-          {/* /Inventory */}
+              {/* /Inventory */}
 
-          {/* Sales */}
-          {/*  <ul
+              {/* Sales */}
+              {/*  <ul
               // style={{
               //   display:
               //     showHide("invoice") && showHide("creditNote")
@@ -458,10 +520,10 @@ const reqDashboardObj =  {
                   </Link>
                 </li>
               </ul> */}
-          {/* /Sales */}
+              {/* /Sales */}
 
-          {/* Purchases */}
-          {/* <ul
+              {/* Purchases */}
+              {/* <ul
                 style={{
                   display:
                     showHide("purchase") &&
@@ -530,10 +592,10 @@ const reqDashboardObj =  {
                   </Link>
                 </li>
               </ul> */}
-          {/* /Purchases */}
+              {/* /Purchases */}
 
-          {/* Finance & Accounts */}
-          {/* <ul
+              {/* Finance & Accounts */}
+              {/* <ul
                 style={{
                   display:
                     showHide("expense") && showHide("payment")
@@ -571,10 +633,10 @@ const reqDashboardObj =  {
                   </Link>
                 </li>
               </ul> */}
-          {/* /Finance & Accounts */}
+              {/* /Finance & Accounts */}
 
-          {/* Quotations */}
-          {/* <ul
+              {/* Quotations */}
+              {/* <ul
                 style={{
                   display:
                     showHide("quotation") && showHide("deliveryChallan")
@@ -622,10 +684,10 @@ const reqDashboardObj =  {
                   </Link>
                 </li>
               </ul> */}
-          {/* /Quotations */}
+              {/* /Quotations */}
 
-          {/* Reports */}
-          {/*  <ul
+              {/* Reports */}
+              {/*  <ul
                 style={{
                   display: showHide("paymentSummaryReport") ? "none" : "block",
                 }}
@@ -649,9 +711,9 @@ const reqDashboardObj =  {
                   </Link>
                 </li>
               </ul> */}
-          {/* /Reports */}
+              {/* /Reports */}
 
-          {/* <ul
+              {/* <ul
                 className="settings"
                 style={{
                   display:
@@ -691,8 +753,8 @@ const reqDashboardObj =  {
                   </Link>
                 </li>
               </ul> */}
-          {/* User Management */}
-          {/*  <ul
+              {/* User Management */}
+              {/*  <ul
                 className="user-management"
                 style={{
                   display: showHide("user") ? "none" : "block",
@@ -788,9 +850,9 @@ const reqDashboardObj =  {
                   </Link>
                 </li>
               </ul> */}
-          {/* /User Management */}
-      </div>
-    </div >
+              {/* /User Management */}
+            </div>
+          </div >
         </Scrollbars >
       </div >
     </>

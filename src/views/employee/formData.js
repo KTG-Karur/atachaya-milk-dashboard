@@ -17,24 +17,39 @@ const editEmployeeForm = [
                 "required": true
             },
             {
-                "label": "Branch Name",
-                "name": "branchName",
-                "inputType": "text",
+                "label": "Role",
+                "name": "roleId",
+                "inputType": "select",
+                "optionList": "roleList",
+                "displayKey": "roleName",
+                "uniqueKey": "roleId",
+                "required": true
             },
-        ]
-    },
-    {
-        formFields: [
             {
                 "label": "Contact Number",
                 "name": "contactNo",
                 "inputType": "text",
                 "required": true
-            },
+            }, 
+        ]
+    },
+    {
+        formFields: [
             {
                 "label": "Bank Name",
                 "name": "bankName",
                 "inputType": "text",
+            },
+            {
+                "label": "Branch Name",
+                "name": "branchName",
+                "inputType": "text",
+            },
+            {
+                "label": "Account Number",
+                "name": "accountNo",
+                "inputType": "text",
+                "required": true
             },
             {
                 "label": "IFSC Code",
@@ -70,10 +85,21 @@ const employeeForm = [
                 "required": true
             },
             {
-                "label": "Branch Name",
-                "name": "branchName",
-                "inputType": "text",
+                "label": "Role",
+                "name": "roleId",
+                "inputType": "select",
+                "optionList": "roleList",
+                "displayKey": "roleName",
+                "uniqueKey": "roleId",
+                "required": true
             },
+            {
+                "label": "Contact Number",
+                "name": "contactNo",
+                "inputType": "text",
+                "required": true
+            }, 
+           
         ]
     },
     {
@@ -85,15 +111,20 @@ const employeeForm = [
                 "required": true
             },
             {
-                "label": "Contact Number",
-                "name": "contactNo",
-                "inputType": "text",
-                "required": true
-            },
-            {
                 "label": "Bank Name",
                 "name": "bankName",
                 "inputType": "text",
+            },
+            {
+                "label": "Branch Name",
+                "name": "branchName",
+                "inputType": "text",
+            },
+            {
+                "label": "Account Number",
+                "name": "accountNo",
+                "inputType": "text",
+                "required": true
             },
             {
                 "label": "IFSC Code",
@@ -101,6 +132,7 @@ const employeeForm = [
                 "inputType": "text",
                 "required": true
             },
+           
         ]
     }
 ]
