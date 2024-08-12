@@ -68,6 +68,8 @@ const LoginComponentController = (props) => {
       // formData.fcmToken = localStorage.getItem("fcmToken");
       const response = await getData(loginApi, request);        // need to change in api
       if (response.code === 200) {
+
+        console.log("login SuccessFully")
         localStorage.setItem("userDetails", JSON.stringify(response.data));
         /* const token = response.data.token;
         const user = jwt(token);

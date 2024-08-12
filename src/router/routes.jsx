@@ -41,6 +41,7 @@ import TransportEntry from "../views/transport-entry";
 import TankerSupplier from "../views/tanker-supplier";
 import TankerEntry from "../views/tanker-entry";
 import CustomerAdvance from "../views/customer-advance";
+import CustomerPayment from "../views/customer-payment";
 
 export const unAuthRoutes = [
   {
@@ -93,6 +94,10 @@ export const authRoutes = [
   {
     path: "/payment-entry",
     element: <NewPaymentEntry />,
+  },
+  {
+    path: "/customer-payment",
+    element: <CustomerPayment />,
   },
   {
     path: "/shift",
