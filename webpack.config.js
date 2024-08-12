@@ -20,7 +20,7 @@ const envKeys = Object?.keys(envVars).reduce((prev, next) => {
 module.exports = (env = {}) => {
   const isProduction = env.NODE_ENV === "production";
   // const apiUrl = isProduction ? envVars?.REACT_APP_BACKEND_URL : "http://localhost:5014";
-  const apiUrl = isProduction ? envVars?.REACT_APP_BACKEND_URL : "http://atachayamilkapi.ktgt.in";
+  const apiUrl = isProduction ? envVars?.REACT_APP_BACKEND_URL : "https://atachayamilkapi.ktgt.in";
   return {
     mode: isProduction ? "production" : "development",
     entry: {
@@ -38,7 +38,7 @@ module.exports = (env = {}) => {
     externals: {
       // global app config object
       config: JSON.stringify({
-        API_URL: apiUrl || 'http://atachayamilkapi.ktgt.in',
+        API_URL: apiUrl || 'https://atachayamilkapi.ktgt.in',
         // API_URL: apiUrl || 'http://localhost:5014',
         imageapiUrl: "",
         publicPath: "/",
